@@ -8,6 +8,7 @@ let musicList = {
 }
 
 let index = 1;
+let isPaused = false;
 let fileName = musicList[index];
 let music = new Audio(`musics/${fileName}`);
 let isPlaying = false;
@@ -23,14 +24,18 @@ const musicNameElement = document.querySelector('.js-music-name');
 playBtnElement.addEventListener('click', ()=>{
     if(!isPlaying) {
         isPlaying = true;
-        updateProgressBar();
-        music.play();
-        musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${musicList[index]}</marquee`;
-        
+        if(isPaused) {
+            music.play();
+            isPaused = false;
+        }else if(!isPaused) {
+            isPaused = false;
+            playMusic();
+        }        
         playBtnElement.innerHTML = `<img src="icons/pause.png" alt="" class="pause-image control-icon"></img>`;
     }else if(isPlaying) {
         isPlaying = false;
         pauseMusic();
+        isPaused = true;
         playBtnElement.innerHTML = `<img src="icons/play.png" alt="" class="play-image control-icon">`;
     }
 
@@ -38,14 +43,7 @@ playBtnElement.addEventListener('click', ()=>{
 
 forwardBtnElement.addEventListener('click',()=>{
     pauseMusic();
-    
-    if(index != 5) {
-        index++;
-        updateMusic();
-    }else if(index === 5) {
-        index = 1;
-        updateMusic();
-    }
+    playNext();
     if(isPlaying) {
         playBtnElement.innerHTML = `<img src="icons/pause.png" alt="" class="pause-image control-icon"></img>`;
     }
@@ -54,12 +52,17 @@ forwardBtnElement.addEventListener('click',()=>{
 
 backwardBtnElement.addEventListener('click',()=>{
     pauseMusic();
-    if(index > 1) {
-        index--;
-        updateMusic();
-    }else if(index === 1) {
-        index = 5;
-        updateMusic();
+    let currSecTime = Math.floor((music.currentTime.toFixed(2))%60);
+    if(currSecTime > 5) {
+        music.currentTime = 0;
+        playMusic();
+    }else {
+        if(index > 1) {
+            index--;
+        }else if(index === 1) {
+            index = 5;
+        }
+        playMusic();
     }
 });
 
@@ -67,32 +70,36 @@ backwardBtnElement.addEventListener('click',()=>{
 
 
 // const clickTone = new Audio('tones/click.mp3');
+function playMusic() {
+    updateMusic();
+    music.play();
+    isPlaying = true;
+    updateProgressBar();
+    musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${musicList[index]}</marquee`;
+
+    music.onended = playNext;
+}
 
 function updateMusic() {
     let fileName = musicList[index];
     music = new Audio(`musics/${fileName}`);
-    updateProgressBar();
-    musicNameElement.innerHTML = musicList[index];
-    musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${musicList[index]}</marquee`;
-
-    music.play();
-    isPlaying = true;
-    music.onended  = playNext;
+    
 }
 function pauseMusic() {
     music.pause();
 }
 function playNext() {
-    if(index <5) {
+    if(index < 5) {
         index++;
-    }else{
+    }else if(index === 5){
         index = 1;
     }
-    
-    music.onended = playNext;
+    playMusic();
 }
 
+
 function updateProgressBar() {
+
     music.ontimeupdate = ()=>{
         let progress = ((music.currentTime/music.duration)*100).toFixed(2);
         progressd.style.width = progress+"%";
