@@ -3,10 +3,12 @@ let musicList = {
     2 : "Apocalypse  Cigarettes After Sex_320kbps.mp3",
     3 : "yt1s.com - Dhoro Jodi Hothat Sondhye  ধর যদ হঠৎ সনধয  বউনডল  Baundule  Spandan Bengali Song.mp3",
     4 : "Shey Ki Jane Lofi Remix-(Mr-Jat.in).mp3",
-    5 : "Raatan Lambiyan.mp3"
+    5 : "Raatan Lambiyan.mp3",
+    6 : "Thik jeno love story.mp3"
 
 }
 
+let lastIdx = Object.keys(musicList).length;
 let index = 1;
 let isPaused = false;
 let fileName = musicList[index];
@@ -53,14 +55,14 @@ forwardBtnElement.addEventListener('click',()=>{
 backwardBtnElement.addEventListener('click',()=>{
     pauseMusic();
     let currSecTime = Math.floor((music.currentTime.toFixed(2))%60);
-    if(currSecTime > 5) {
+    if(currSecTime > lastIdx) {
         music.currentTime = 0;
         playMusic();
     }else {
         if(index > 1) {
             index--;
         }else if(index === 1) {
-            index = 5;
+            index = lastIdx;
         }
         playMusic();
     }
@@ -89,9 +91,9 @@ function pauseMusic() {
     music.pause();
 }
 function playNext() {
-    if(index < 5) {
+    if(index < lastIdx) {
         index++;
-    }else if(index === 5){
+    }else if(index === lastIdx){
         index = 1;
     }
     playMusic();
