@@ -112,3 +112,26 @@ body {
     flex-direction: row-reverse;
     margin-left: 240px;
 }
+
+.looping {
+    background-color: rgba(255, 255, 255, 0);
+    text-align: center;
+    width: 33px;
+    height: 25px;
+    margin-left: 45.6%;
+    cursor: pointer;
+    
+}
+.looping i {
+    color: rgb(0, 0, 0);
+    font-size: 35px;
+    
+}
+
+.looping p {
+    color: black;
+    margin-top: -18px;
+    margin-left: -4px;
+    font-size: 12px;
+    font-weight: bold;
+}

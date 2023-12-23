@@ -8,6 +8,7 @@ let musicList = {
 
 }
 
+let looping = false;
 let lastIdx = Object.keys(musicList).length;
 let index = 1;
 let isPaused = false;
@@ -22,6 +23,9 @@ const progressd = document.getElementById('js-progress');
 const currentTimeElement = document.querySelector('.js-current-time');
 const durationElement = document.querySelector('.js-duration');
 const musicNameElement = document.querySelector('.js-music-name');
+const loopStatus = document.querySelector('.loop-status');
+const loopImage = document.querySelector('.loop-img');
+const loopElement = document.querySelector('.looping');
 
 playBtnElement.addEventListener('click', ()=>{
     if(!isPlaying) {
@@ -92,9 +96,15 @@ function pauseMusic() {
 }
 function playNext() {
     if(index < lastIdx) {
-        index++;
+        if(looping === false) {
+            index++;
+        }
+        
     }else if(index === lastIdx){
-        index = 1;
+        if(looping === false){
+            index = 1;
+        }
+        
     }
     playMusic();
 }
@@ -129,6 +139,24 @@ progressBarElement.onclick = (e)=>{
     music.currentTime = ((e.offsetX/progressBarElement.offsetWidth)*music.duration);
 }
 
+//loop functionality:::
+const loopON = ()=> {
+    looping = true;
+    loopStatus.innerText = 'on';
+}
+const loopOFF = ()=> {
+    looping = false;
+    loopStatus.innerText = 'off';
+}
+loopOFF();
+
+loopElement.addEventListener('click',()=> {
+    if(looping) {
+        loopOFF();
+    }else if(!looping) {
+        loopON();
+    }
+})
 
 // music.play();
 
