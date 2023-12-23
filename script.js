@@ -150,7 +150,8 @@ const loopOFF = ()=> {
 }
 loopOFF();
 
-loopElement.addEventListener('click',()=> {
+loopElement.addEventListener('click',(event)=> {
+    event.preventDefault();
     if(looping) {
         loopOFF();
     }else if(!looping) {
