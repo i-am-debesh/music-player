@@ -30,6 +30,7 @@ const loopElement = document.querySelector('.looping');
 playBtnElement.addEventListener('click', ()=>{
     if(!isPlaying) {
         isPlaying = true;
+        handleRotation();
         if(isPaused) {
             music.play();
             isPaused = false;
@@ -40,6 +41,7 @@ playBtnElement.addEventListener('click', ()=>{
         playBtnElement.innerHTML = `<img src="icons/pause.png" alt="" class="pause-image control-icon"></img>`;
     }else if(isPlaying) {
         isPlaying = false;
+        handleRotation();
         pauseMusic();
         isPaused = true;
         playBtnElement.innerHTML = `<img src="icons/play.png" alt="" class="play-image control-icon">`;
@@ -68,7 +70,11 @@ backwardBtnElement.addEventListener('click',()=>{
         }else if(index === 1) {
             index = lastIdx;
         }
+        updateMusic();
         playMusic();
+    }
+    if(isPlaying) {
+        playBtnElement.innerHTML = `<img src="icons/pause.png" alt="" class="pause-image control-icon"></img>`;
     }
 });
 
@@ -81,7 +87,6 @@ function playMusic() {
     music.play();
     isPlaying = true;
     updateProgressBar();
-    musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${musicList[index]}</marquee`;
 
     music.onended = playNext;
 }
@@ -89,6 +94,8 @@ function playMusic() {
 function updateMusic() {
     let fileName = musicList[index];
     music = new Audio(`musics/${fileName}`);
+    musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${musicList[index]}</marquee`;
+
     
 }
 function pauseMusic() {
@@ -158,6 +165,18 @@ loopElement.addEventListener('click',(event)=> {
         loopON();
     }
 })
+
+
+//rotation control::::::::::::
+function handleRotation (){
+    const posterRotationElement = document.querySelector('.poster');
+    if(isPlaying === true) {
+        posterRotationElement.classList.add('rotation');
+    }else if(isPlaying === false) {
+        posterRotationElement.classList.remove('rotation');
+    }
+}
+
 
 // music.play();
 
