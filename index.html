@@ -11,58 +11,57 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.css" integrity="sha512-tx5+1LWHez1QiaXlAyDwzdBTfDjX07GMapQoFTS74wkcPMsI3So0KYmFe6EHZjI8+eSG0ljBlAQc3PQ5BTaZtQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-
-    <div class="player-container">
-        <div class="container">
-            <div class="poster-area">
-                <div class="poster">
-                    <img src="poster.svg" alt="" width="100%" height="95%" style="margin-top: 5px;">
+    <div class="main-body">
+        <div class="player-container">
+            <div class="container">
+                <div class="poster-area">
+                    <div class="poster">
+                        <img src="poster.svg" alt="" width="100%" height="95%" style="margin-top: 5px;">
+                    </div>
+                    
                 </div>
-                
-            </div>
-            <div class="music-name js-music-name">
-                Hello World!
-            </div>
-            <div class="progress-bar-area js-progress-area" id="js-progress-area">
-                <div class="progress js-progress" id="js-progress"></div>
-            </div>
-            <div class="time-stamp">
-                <div class="current-time js-current-time">00.00</div>
-                <div class="duration js-duration">00.00</div>
-            </div>
-            <div class="control-area">
-                
-                <div class="backward">
-                    <img src="icons/backward.png" alt="" class="back-image backward-btn-js control-icon">
+                <div class="music-name js-music-name">
+                    Hello World!
                 </div>
-                <div class="play">
-                    <img src="icons/play.png" alt="" class="play-image control-icon">
+                <div class="progress-bar-area js-progress-area" id="js-progress-area">
+                    <div class="progress js-progress" id="js-progress"></div>
                 </div>
-                <div class="forward">
-                    <img src="icons/forward.png" alt="" class="forward-image forward-btn-js control-icon">
+                <div class="time-stamp">
+                    <div class="current-time js-current-time">00.00</div>
+                    <div class="duration js-duration">00.00</div>
                 </div>
+                <div class="control-area">
+                    
+                    <div class="backward">
+                        <img src="icons/backward.png" alt="" class="back-image backward-btn-js control-icon">
+                    </div>
+                    <div class="play">
+                        <img src="icons/play.png" alt="" class="play-image control-icon">
+                    </div>
+                    <div class="forward">
+                        <img src="icons/forward.png" alt="" class="forward-image forward-btn-js control-icon">
+                    </div>
+                </div>
+                <div class="looping">
+                    
+                    <i class="fa-solid fa-repeat fa-2xl loop-img"></i>
+                    <p class="loop-status"></p>     
+                </div>
+                <div class="version">v 1.0.1</div>
             </div>
-            <div class="looping">
-                
-                <i class="fa-solid fa-repeat fa-2xl loop-img"></i>
-                <p class="loop-status"></p>     
-            </div>
-            <div class="version">v 1.0.1</div>
         </div>
+        
+        <div class="list-container">
+            <div class="choose-file">
+                <input type="file" id="fileInput" multiple>
+            </div>
+            <div class="items">
+                
+            </div>
+
+        </div>
+
     </div>
-    
-
-    <div class="list-container">
-        <div class="choose-file">
-            <input type="file" id="fileInput" multiple>
-        </div>
-        <div class="items">
-            <ul id="list"></ul>
-        </div>
-
-    </div>
-
-    
 
     <script src="newScript.js"></script>
 </body>

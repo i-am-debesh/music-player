@@ -10,11 +10,26 @@ body {
     justify-content: center;
 }
 .list-container {
-    text-align: center;
+    /* background-color: green; */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 .items {
-    text-align: justify;
+    /* text-align: justify; */
+    display: flex;
+    flex-direction: column;
+    justify-self: center;
     color: green;
+    max-width: 600px;
+    max-height: 200px;
+    overflow-y: scroll;
+    scrollbar-color: rgba(255, 255, 255, 0.122) rgba(38, 66, 71, 0.122);
+    scrollbar-width:thin;
+    margin-top: 15px;
+        
 }
 .container {
     height: 600px;
@@ -163,4 +178,41 @@ body {
     margin-top: 10px;
     
 
+}
+
+.main-body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+}
+
+.file-name {
+    background-color: rgba(240, 248, 255, 0.129);
+    margin-bottom: 4px;
+    height: 50px;
+    width: 100%;
+    max-width: 600px ;
+    border-radius: 5px;  
+    padding-top: 30px;
+    padding-bottom: 0px;
+    text-align: justify;
+    padding-left: 20px;
+    padding-right: 20px;
+    color: white;
+    
+}
+.music-file{
+    display: flex;
+    
+}
+.file-btn-play {
+    background-color: rgba(122, 120, 120, 0.305);
+    color: white;
+    
+}
+.item-play-btn {
+    height: 30px;
+    width: 30px;
+    filter: invert();
 }

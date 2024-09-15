@@ -9,7 +9,6 @@ const musicNameElement = document.querySelector('.js-music-name');
 const loopStatus = document.querySelector('.loop-status');
 const loopImage = document.querySelector('.loop-img');
 const loopElement = document.querySelector('.looping');
-
 let playlist = [];
 let fileName;
 let fileIndex= 0;
@@ -24,7 +23,7 @@ function handleFileSelect(event) {
         const file = files[i];
         const url = URL.createObjectURL(file);
         playlist.push({ name: file.name, url: url });
-        appendToPlaylist(file.name);
+        appendToPlaylist(file.name, i);
         
     }
     
@@ -32,11 +31,21 @@ function handleFileSelect(event) {
 }
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 
-function appendToPlaylist(fileName) {
-    const listElement = document.getElementById('list');
-    const listItem = document.createElement('li');
-    listItem.textContent = fileName;
-    listElement.appendChild(listItem);
+
+
+function appendToPlaylist(fileName, idx) {
+    const itemField = document.querySelector('.items');
+    // const listElement = document.getElementById('list');
+    // const listItem = document.createElement('div');
+    const listItem = `
+    <div class="music-file">
+        
+        <div class="file-name file-idx-${idx}" id=${idx}>
+            ${fileName}
+        <div>
+    </div>
+    `;
+    itemField.innerHTML += listItem;
     
 }
 
@@ -45,6 +54,7 @@ function updateFileName(fileIndex) {
     fileName = playlist[fileIndex].url;
     music = new Audio(fileName);
     musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${playlist[fileIndex].name}</marquee`;
+    
 
     
 }
@@ -94,7 +104,8 @@ function playNext() {
     playMusic();
 }
 
-function playMusic() {
+function playMusic(fileIndex=0) {
+
     if(opening === true) {
         
         updateFileName(fileIndex);
