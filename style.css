@@ -1,7 +1,8 @@
 body {
     
     color: rgb(255, 255, 255);
-    background-color: rgb(14, 11, 11);
+    background-color: rgb(12, 19, 35);
+    /* background-color: rgb(5, 21, 14); */
 
 }
 .player-container {
@@ -18,7 +19,7 @@ body {
 .container {
     height: 600px;
     width: 400px;
-    background-color: rgba(87, 113, 133, 0.729);
+    background-color: rgba(110, 126, 139, 0);
     border-radius: 2px;
     border-style:hidden;
     /* border-color: #ff005500; */
@@ -38,7 +39,7 @@ body {
 .music-name {
     margin-left: 35px;
     margin-right: 35px;
-    background-color: rgba(46, 139, 86, 0);
+    /* background-color: rgba(46, 139, 86, 0); */
     margin-top: 15px;
     margin-bottom: 15px;
     display: flex;
@@ -58,29 +59,32 @@ body {
 }
 
 .poster {
-    background-color: rgba(127, 255, 212, 0.163);
+    background-color: rgba(218, 211, 214, 0.647);
     height: 300px;
     width: 300px;
     border-radius: 100%;
     border-style:solid;
-    border-color: rgb(157, 180, 188);
+    border-color: rgb(205, 205, 205);
 }
 
 .control-icon {
     margin-left: 30px;
     width: 40px;
     cursor: pointer;
+    filter: invert();
 }
 .back-image {
     width: 34px;
     margin-right: 5px;
     margin-left: 0px;
     cursor: pointer;
+    
 }
 .play-image,
 .pause-image {
     width: 60px;
     cursor: pointer;
+    
 }
 
 .progress-bar-area {
@@ -130,6 +134,7 @@ body {
     height: 25px;
     margin-left: 45.6%;
     cursor: pointer;
+    filter: invert();
     
 }
 .looping i {
