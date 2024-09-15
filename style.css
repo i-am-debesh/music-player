@@ -97,7 +97,7 @@ body {
 .progress {
     height: 100%;
     width: 0%;
-    background-color: black;
+    background-color: rgb(96, 64, 202);
     
     
 }
