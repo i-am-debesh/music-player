@@ -19,10 +19,10 @@ body {
     height: 600px;
     width: 400px;
     background-color: rgba(87, 113, 133, 0.729);
-    border-radius: 100%;
+    border-radius: 2px;
     border-style:hidden;
     /* border-color: #ff005500; */
-    box-shadow: 0.2px 0.2px 50px #98d6dd;
+    /* box-shadow: 0.2px 0.2px 50px #98d6dd; */
 }
 .poster-area {
     /* background-color: yellowgreen; */
