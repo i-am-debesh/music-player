@@ -9,6 +9,8 @@ const musicNameElement = document.querySelector('.js-music-name');
 const loopStatus = document.querySelector('.loop-status');
 const loopImage = document.querySelector('.loop-img');
 const loopElement = document.querySelector('.looping');
+const playListElement = document.querySelector('.play-list');
+const itemsElement = document.querySelector('.items');
 let playlist = [];
 let fileName;
 let fileIndex= 0;
@@ -30,8 +32,17 @@ function handleFileSelect(event) {
 
 }
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
-
-
+let listShowing = false;
+playListElement.addEventListener('click', ()=>{
+    if(listShowing === false) {
+        itemsElement.classList.add('show-list');
+        listShowing=true;
+    }else {
+        itemsElement.classList.remove('show-list');
+        listShowing=false;
+    }
+    
+})
 
 function appendToPlaylist(fileName, idx) {
     const itemField = document.querySelector('.items');
@@ -40,8 +51,9 @@ function appendToPlaylist(fileName, idx) {
     const listItem = `
     <div class="music-file">
         
-        <div class="file-name file-idx-${idx}" id=${idx}>
-            ${fileName}
+        <div class="file-name file-idx-${idx}" id=${idx} onclick=playThis()>
+            <div>${idx+1}.&nbsp;&nbsp;</div>
+            <div>${fileName}</div>
         <div>
     </div>
     `;
@@ -55,7 +67,9 @@ function updateFileName(fileIndex) {
     music = new Audio(fileName);
     musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${playlist[fileIndex].name}</marquee`;
     
-
+    const fileId = document.getElementById(`${fileIndex}`);
+    // fileId.style.backgroundColor = 'green'
+    fileId.classList.add("playing");
     
 }
 
@@ -79,6 +93,8 @@ forwardBtnElement.addEventListener('click',()=>{
 });
 
 function playPrevious() {
+    const fileId = document.getElementById(fileIndex);
+    fileId.classList.remove('playing');
     if(fileIndex === 0) {
         fileIndex = playlist.length-1;
     }else{
@@ -89,7 +105,9 @@ function playPrevious() {
     updateFileName(fileIndex);
     playMusic();
 }
-function playNext() {
+function playNext() {    
+    const fileId = document.getElementById(fileIndex);
+    fileId.classList.remove("playing");
     if(fileIndex === playlist.length-1) {
         fileIndex = 0;
     }else {
@@ -102,6 +120,7 @@ function playNext() {
     stopMusic();
     updateFileName(fileIndex);
     playMusic();
+    
 }
 
 function playMusic(fileIndex=0) {
