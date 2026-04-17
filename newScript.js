@@ -59,7 +59,7 @@ function appendToPlaylist(fileName, idx) {
     const listItem = `
     <div class="music-file">
         
-        <div class="file-name file-idx-${idx}" id=${idx} onclick=playThis()>
+        <div style="cursor: pointer;" class="file-name file-idx-${idx}" id=${idx} onclick=playThis(this.id)>
             <div>${idx+1}.&nbsp;&nbsp;</div>
             <div>${fileName}</div>
         <div>
@@ -68,9 +68,22 @@ function appendToPlaylist(fileName, idx) {
     itemField.innerHTML += listItem;
     
 }
+function playThis(musicId) {
+    
+    opening = false;
+    updateFileName(Number(musicId));
+    playMusic();
+    fileIndex = musicId;
+    
+    
+}
 
 ///
 function updateFileName(fileIndex) {
+    document.querySelectorAll('.playing').forEach(el => el.classList.remove('playing'));
+    if(isPlaying === true) {
+        stopMusic();
+    }
     fileName = playlist[fileIndex].url;
     music = new Audio(fileName);
     musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${playlist[fileIndex].name}</marquee`;
@@ -95,9 +108,11 @@ playBtn.addEventListener('click',()=>{
 });
 backwardBtnElement.addEventListener('click', ()=>{
     playPrevious();
+    handleRotation();
 });
 forwardBtnElement.addEventListener('click',()=>{
     playNext();
+    handleRotation();
 });
 
 function playPrevious() {
