@@ -1,0 +1,25 @@
+{
+  "name": "My Pro Music Player",
+  "short_name": "MusicApp",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#121212",
+  "theme_color": "#121212",
+  "description": "A simple offline music player.",
+  "icons": [
+   
+    {
+        "src": "icons/icons8-music.svg",
+        "sizes": "any",
+        "type": "image/svg+xml",
+        "purpose": "any"
+    },
+    {
+        "src": "icons/icons8-music.svg",
+        "sizes": "512x512",
+        "type": "image/svg+xml",
+        "purpose": "any"
+    }
+    
+  ]
+}

@@ -1,3 +1,11 @@
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => console.log('Service Worker registered!'))
+      .catch(err => console.error('Service Worker failed:', err));
+  });
+}
+
 const playBtnElement = document.querySelector('.play');
 const forwardBtnElement = document.querySelector('.forward-btn-js');
 const backwardBtnElement = document.querySelector('.backward-btn-js');
