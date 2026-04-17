@@ -3,7 +3,7 @@ const staticAssets = [
   './',
   './index.html',
   './style.css',
-  './script.js',
+  './newScript.js',
   './manifest.json',
   './poster.svg',
   './icons/icons8-music.svg', 
