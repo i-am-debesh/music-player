@@ -1,10 +1,11 @@
-const cacheName = 'music-player-v1.0.4'; // Increment this (v3, v4) when you update your code
+const cacheName = 'music-player-v1.0.4.'; // Increment this (v3, v4) when you update your code
 const staticAssets = [
   './',
   './index.html',
   './style.css',
   './script.js',
   './manifest.json',
+  './poster.svg',
   './icons/icons8-music.svg', 
   './icons/play.png',         
   './icons/pause.png',
