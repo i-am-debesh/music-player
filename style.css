@@ -46,7 +46,7 @@ body {
     background-color: rgba(110, 126, 139, 0);
     border-radius: 2px;
     border-style:hidden;
-    padding: 0rem 10rem;
+    padding: 0rem;
     margin-top: 3rem;
     /* border-color: #ff005500; */
     /* box-shadow: 0.2px 0.2px 50px #98d6dd; */
@@ -161,7 +161,8 @@ body {
     text-align: center;
     width: 33px;
     height: 25px;
-    margin-left: 10%;
+    margin-left: 0.5rem;
+    margin-right: 2.1rem;
     cursor: pointer;
     filter: invert();
     

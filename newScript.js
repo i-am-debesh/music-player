@@ -110,6 +110,16 @@ function updateFileName(fileIndex) {
     // fileId.style.backgroundColor = 'green'
     fileId.classList.add("playing");
     
+    updateLockScreen(playlist[fileIndex].name,'unknown')
+    
+}
+function updateLockScreen(title, artist) {
+  if ('mediaSession' in navigator) {
+    navigator.mediaSession.metadata = new MediaMetadata({
+      title: title,
+      artist: artist
+    });
+  }
 }
 
 const playBtn = document.querySelector('.play');
@@ -267,3 +277,47 @@ function handleRotation (){
         posterRotationElement.classList.remove('rotation');
     }
 }
+
+// for lock screen actions::::
+
+if ('mediaSession' in navigator) { 
+    const iconPath = window.location.origin + '/icons/your-image-name.png';
+
+    let title = '';
+    if(playlist.length > 0 ) {
+        title = playlist[fileIndex].name;
+    }
+
+    navigator.mediaSession.metadata = new MediaMetadata({
+    title: title,
+    artist: 'unknown',
+    album: 'My PWA Collection',
+    artwork: [
+      { src: iconPath, sizes: '512x512', type: 'image/png' }
+    ]
+  });
+
+  // Action for the 'Back' button on lock screen
+  navigator.mediaSession.setActionHandler('previoustrack', () => {
+    playPrevious(); // Call your existing function here
+  });
+
+  // Action for the 'Forward' button on lock screen
+  navigator.mediaSession.setActionHandler('nexttrack', () => {
+    playNext() // Call your existing function here
+  });
+
+  // Action for Play/Pause
+  navigator.mediaSession.setActionHandler('play', () => {
+    music.play();
+    isPlaying = true;
+    isPaused = false;
+  });
+
+  navigator.mediaSession.setActionHandler('pause', () => {
+    music.pause();
+    isPlaying = false;
+    isPaused = true;
+  });
+}
+
