@@ -5,7 +5,13 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('Service Worker failed:', err));
   });
 }
-
+window.addEventListener('beforeunload', (event) => {
+    // Cancel the event (standard practice)
+    event.preventDefault();
+    
+    // Chrome requires returnValue to be set
+    event.returnValue = ''; 
+});
 const playBtnElement = document.querySelector('.play');
 const forwardBtnElement = document.querySelector('.forward-btn-js');
 const backwardBtnElement = document.querySelector('.backward-btn-js');
@@ -60,8 +66,19 @@ function appendToPlaylist(fileName, idx) {
     <div class="music-file">
         
         <div style="cursor: pointer;" class="file-name file-idx-${idx}" id=${idx} onclick=playThis(this.id)>
+            
             <div>${idx+1}.&nbsp;&nbsp;</div>
-            <div>${fileName}</div>
+            
+            <div>
+            <div behavior="scroll" direction="left" scrollamount="2">${fileName}</div>
+            </div>
+
+            <div class="wave-container">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+            </div>
         <div>
     </div>
     `;
@@ -71,9 +88,10 @@ function appendToPlaylist(fileName, idx) {
 function playThis(musicId) {
     
     opening = false;
+    fileIndex = Number(musicId);
     updateFileName(Number(musicId));
-    playMusic();
-    fileIndex = musicId;
+    playMusic();    
+    handleRotation();
     
     
 }
