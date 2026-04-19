@@ -22,9 +22,10 @@ const durationElement = document.querySelector('.js-duration');
 const musicNameElement = document.querySelector('.js-music-name');
 const loopStatus = document.querySelector('.loop-status');
 const loopImage = document.querySelector('.loop-img');
-const loopElement = document.querySelector('.looping');
+const loopElement = document.querySelector('.loop-img');
 const playListElement = document.querySelector('.play-list');
 const itemsElement = document.querySelector('.items');
+const removeAllBtn = document.querySelector('.rm-all');
 let playlist = [];
 let fileName;
 let fileIndex= 0;
@@ -33,6 +34,16 @@ let isPlaying = false;
 let opening = true;
 let looping = false;
 let isPaused = false;
+let actionState = ''; //[song-import, song-delete,]
+function updateState(state) {
+    localStorage.setItem('state',state);
+}
+function getState() {
+    if(localStorage.length !== 0) {
+        alert(localStorage.getItem('state'));
+        localStorage.clear();
+    }
+}
 function handleFileSelect(event) {
     const files = event.target.files;
     for (let i = 0; i < files.length; i++) {
@@ -43,7 +54,10 @@ function handleFileSelect(event) {
         saveSongToDB(file);
         appendToPlaylist(file.name, playlist.length-1)
         
-    } 
+        
+    } updateState('songs imported successfully!');
+    loadAllSongs();
+    
 
 }
 // function updateIndex() {
@@ -54,11 +68,18 @@ function renderList(list) {
     let i = 0;
     list.forEach(item=>{
         appendToPlaylist(item.name, i++);
-    })
+    });
 }
+document.getElementById('fileInput').addEventListener('click', ()=>{
+    updateState('import started but not completed');
+
+})
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 let listShowing = false;
 playListElement.addEventListener('click', ()=>{
+    if(playlist.length === 0) {
+        document.querySelector('.items').innerHTML = `<h2>List is empty</h2>`;
+    }
     if(listShowing === false) {
         itemsElement.classList.add('show-list');
         listShowing=true;
@@ -241,7 +262,12 @@ let secTime  = 0;
 function updateProgressBar() {
     
     music.ontimeupdate = ()=>{
-        durationElement.innerHTML = `${Number(minTime)}:${Number(secTime)}`;
+       
+    
+      
+        durationElement.innerHTML = `${minTime}:${secTime}`;
+
+        
         let progress = ((music.currentTime/music.duration)*100).toFixed(2);
         progressd.style.width = `${progress}%`;
         //for current time:
@@ -256,8 +282,9 @@ function updateProgressBar() {
         currentTimeElement.innerHTML = `${currMinTime}:${currSecTime}`;
 
         //for duration:
-        minTime = Number(Math.floor(music.duration/60));
-        secTime = Number(Math.floor((music.duration.toFixed(2))%60));
+        Number((Math.floor(Number(music.duration)/60)))<10? minTime = `0${(Math.floor(music.duration/60))}` : minTime = `${(Math.floor(music.duration/60))}`;
+        Number((Math.floor((Number(music.duration).toFixed(2))%60)))<10? secTime = `0${(Math.floor((music.duration.toFixed(2))%60))}` : secTime = (Math.floor((music.duration.toFixed(2))%60));
+        
         // currentTimeElement.innerHTML = Math.floor(progress);
         //durationElement.innerHTML = `${minTime}:${secTime}`;
     };
@@ -284,8 +311,10 @@ loopElement.addEventListener('click',(event)=> {
     event.preventDefault();
     if(looping) {
         loopOFF();
+        loopElement.classList.remove('loop-on');
     }else if(!looping) {
         loopON();
+        loopElement.classList.add('loop-on');
     }
 })
 
@@ -398,6 +427,7 @@ async function loadAllSongs() {
         }
 
         renderList(playlist); 
+        getState();
     };
 }
 
@@ -429,7 +459,7 @@ function deleteFromApp(songName, btnElement) {
         
         setTimeout(() => {
             musicFileDiv.remove();
-            
+            updateState(`${songName} removed`);
             location.reload();
            
         }, 300);
@@ -440,6 +470,22 @@ function deleteFromApp(songName, btnElement) {
     };
 }
 
+
+function deleteAllFromList() {
+
+    if (!confirm("Are you sure you want to delete all songs? This cannot be undone.")) {
+        return;
+    }
+    const transaction = db.transaction(["songs"], "readwrite");
+    const store = transaction.objectStore("songs");
+    const request = store.clear();
+    updateState('All Songs removed successfully!');
+    location.reload();
+}
+
+removeAllBtn.addEventListener('click',()=>{
+    deleteAllFromList();
+});
 
 ///////////Album art extraction:::
 

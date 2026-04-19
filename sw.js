@@ -1,4 +1,4 @@
-const cacheName = 'music-player-v1.0.7.'; // Increment this (v3, v4) when you update your code
+const cacheName = 'music-player-v1.1.0'; // Increment this (v3, v4) when you update your code
 const staticAssets = [
   './',
   './index.html',
