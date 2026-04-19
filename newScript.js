@@ -126,7 +126,9 @@ function updateFileName(fileIndex) {
     fileName = playlist[fileIndex].url;
     music = new Audio(fileName);
     musicNameElement.innerHTML = `<marquee behavior="scroll" direction="left" scrollamount="2">${playlist[fileIndex].name}</marquee`;
-    
+    const artImage = document.querySelector('.poster-img');
+    artImage.src = playlist[fileIndex].img;
+
     const fileId = document.getElementById(`${fileIndex}`);
     // fileId.style.backgroundColor = 'green'
     fileId.classList.add("playing");
@@ -370,32 +372,32 @@ function saveSongToDB(file) {
     store.put({ name: file.name, data: file});
 }
 
-function loadAllSongs() {
+async function loadAllSongs() {
     const transaction = db.transaction(["songs"], "readonly");
     
     
     const store = transaction.objectStore("songs");
     const getAllRequest = store.getAll();
 
-    getAllRequest.onsuccess = () => {
+    getAllRequest.onsuccess = async () => {
         const savedSongs = getAllRequest.result;
-        // let i=fileIndex;
-        playlist=[];
-        //itemsElement.innerHTML = '';
-        savedSongs.forEach(song => {
+        playlist = [];
+
+        for (const song of savedSongs) {
             const blob = song.data;
-            //const url = URL.createObjectURL(song);
-            //console.log(song);
             const newUrl = URL.createObjectURL(blob);
-            playlist.push({name: song.name, url: newUrl});
+            
+            // This will now work perfectly!
+            const albumImg = await getAlbumArt(blob);
+            
+            playlist.push({
+                name: song.name, 
+                url: newUrl,
+                img: albumImg
+            });
+        }
 
-            const songToPlay = {
-            name: song.name,
-            url: newUrl
-        };
-
-            renderList(playlist); 
-        });    
+        renderList(playlist); 
     };
 }
 
@@ -436,4 +438,28 @@ function deleteFromApp(songName, btnElement) {
     request.onerror = () => {
         console.error("Failed to delete song from IndexedDB");
     };
+}
+
+
+///////////Album art extraction:::
+
+function getAlbumArt(file) {
+    return new Promise((resolve) => {
+        jsmediatags.read(file, {
+            onSuccess: function(tag) {
+                const pic = tag.tags.picture;
+                if (pic) {
+                    let base64String = "";
+                    for (let i = 0; i < pic.data.length; i++) {
+                        base64String += String.fromCharCode(pic.data[i]);
+                    }
+                    const artUrl = `data:${pic.format};base64,${window.btoa(base64String)}`;
+                    resolve(artUrl);
+                } else {
+                    resolve("./poster.svg"); // Your fallback
+                }
+            },
+            onError: () => resolve("./poster.svg")
+        });
+    });
 }

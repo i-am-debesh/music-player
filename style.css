@@ -92,6 +92,7 @@ body {
     border-radius: 100%;
     border-style:solid;
     border-color: rgb(205, 205, 205);
+    overflow: hidden;
 }
 
 .control-icon {
