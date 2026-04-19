@@ -5,13 +5,13 @@ if ('serviceWorker' in navigator) {
       .catch(err => console.error('Service Worker failed:', err));
   });
 }
-window.addEventListener('beforeunload', (event) => {
-    // Cancel the event (standard practice)
-    event.preventDefault();
+// window.addEventListener('beforeunload', (event) => {
+//     // Cancel the event (standard practice)
+//     event.preventDefault();
     
-    // Chrome requires returnValue to be set
-    event.returnValue = ''; 
-});
+//     // Chrome requires returnValue to be set
+//     event.returnValue = ''; 
+// });
 const playBtnElement = document.querySelector('.play');
 const forwardBtnElement = document.querySelector('.forward-btn-js');
 const backwardBtnElement = document.querySelector('.backward-btn-js');
@@ -39,11 +39,22 @@ function handleFileSelect(event) {
         const file = files[i];
         const url = URL.createObjectURL(file);
         playlist.push({ name: file.name, url: url });
-        appendToPlaylist(file.name, i);
         
-    }
-    
+        saveSongToDB(file);
+        appendToPlaylist(file.name, playlist.length-1)
+        
+    } 
 
+}
+// function updateIndex() {
+
+// }
+function renderList(list) {
+    itemsElement.innerHTML = '';
+    let i = 0;
+    list.forEach(item=>{
+        appendToPlaylist(item.name, i++);
+    })
 }
 document.getElementById('fileInput').addEventListener('change', handleFileSelect);
 let listShowing = false;
@@ -63,24 +74,34 @@ function appendToPlaylist(fileName, idx) {
     // const listElement = document.getElementById('list');
     // const listItem = document.createElement('div');
     const listItem = `
-    <div class="music-file">
-        
-        <div style="cursor: pointer;" class="file-name file-idx-${idx}" id=${idx} onclick=playThis(this.id)>
+        <div class="music-file">
             
-            <div>${idx+1}.&nbsp;&nbsp;</div>
-            
-            <div>
-            <div behavior="scroll" direction="left" scrollamount="2">${fileName}</div>
+            <div style="cursor: pointer;" class="file-name file-idx-${idx}" id=${idx} onclick=playThis(this.id)>
+                
+                <div>${idx+1}.&nbsp;&nbsp;</div>
+                
+                <div class="scrolling-container">
+                    <div class="scrolling-text">${fileName}</div>
+                </div>
+
+                <div class="wave-container">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+
+                
             </div>
 
-            <div class="wave-container">
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
-                <div class="bar"></div>
+           
+            <div class="rm-area">
+                <button class="rm-btn" onclick="deleteFromApp('${fileName}', this)">
+                    <img src="icons/list.png" alt="remove" class="rm-icon">
+                </button>
             </div>
-        <div>
-    </div>
+            
+        </div>
     `;
     itemField.innerHTML += listItem;
     
@@ -319,5 +340,100 @@ if ('mediaSession' in navigator) {
     isPlaying = false;
     isPaused = true;
   });
+};
+
+
+
+
+////// DB
+
+let db;
+// 1. Open the database
+const request = indexedDB.open("MusicPlayerDB", 1);
+
+request.onupgradeneeded = (e) => {
+    db = e.target.result;
+    if (!db.objectStoreNames.contains("songs")) {
+        db.createObjectStore("songs", { keyPath: "name" });
+    }
+};
+
+request.onsuccess = (e) => {
+    db = e.target.result;
+    console.log("Database Connected");
+    loadAllSongs(); // 2. Automatically load saved songs when the app opens
+};
+
+function saveSongToDB(file) {
+    const transaction = db.transaction(["songs"], "readwrite");
+    const store = transaction.objectStore("songs");
+    store.put({ name: file.name, data: file});
 }
 
+function loadAllSongs() {
+    const transaction = db.transaction(["songs"], "readonly");
+    
+    
+    const store = transaction.objectStore("songs");
+    const getAllRequest = store.getAll();
+
+    getAllRequest.onsuccess = () => {
+        const savedSongs = getAllRequest.result;
+        // let i=fileIndex;
+        playlist=[];
+        //itemsElement.innerHTML = '';
+        savedSongs.forEach(song => {
+            const blob = song.data;
+            //const url = URL.createObjectURL(song);
+            //console.log(song);
+            const newUrl = URL.createObjectURL(blob);
+            playlist.push({name: song.name, url: newUrl});
+
+            const songToPlay = {
+            name: song.name,
+            url: newUrl
+        };
+
+            renderList(playlist); 
+        });    
+    };
+}
+
+/// DELETE SONG FROM DB AND RERENDER::::
+
+function deleteFromApp(songName, btnElement) {
+    // 1. Find the parent container to remove it from UI later
+    const musicFileDiv = btnElement.closest('.music-file');
+    const musicName = btnElement.closest('.file-name');
+    console.log(musicName);
+    
+    // if(musicName.classList.contains('playing')){
+    //     stopMusic();
+    // }
+    // 2. Open IndexedDB transaction
+    const transaction = db.transaction(["songs"], "readwrite");
+    const store = transaction.objectStore("songs");
+
+    // 3. Delete from Database
+    const request = store.delete(songName);
+
+    request.onsuccess = () => {
+        console.log(`${songName} removed from storage.`);
+        
+        // 4. Smooth UI Removal
+        musicFileDiv.style.transition = "0.3s";
+        musicFileDiv.style.opacity = "0";
+        musicFileDiv.style.transform = "translateX(20px)";
+        
+        setTimeout(() => {
+            musicFileDiv.remove();
+            
+            location.reload();
+           
+        }, 300);
+    };
+
+    request.onerror = () => {
+        console.error("Failed to delete song from IndexedDB");
+    };
+}

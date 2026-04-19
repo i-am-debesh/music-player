@@ -1,8 +1,9 @@
-const cacheName = 'music-player-v1.0.5.'; // Increment this (v3, v4) when you update your code
+const cacheName = 'music-player-v1.0.6'; // Increment this (v3, v4) when you update your code
 const staticAssets = [
   './',
   './index.html',
   './style.css',
+  './animation.css',
   './newScript.js',
   './manifest.json',
   './poster.svg',
@@ -12,7 +13,8 @@ const staticAssets = [
   './icons/forward.png',
   './icons/backward.png',
   './icons/playlist-icon.svg',
-  './icons/myart.png'
+  './icons/myart.png',
+  './icons/list.png'
 ];
 
 // 1. Install Event: Save files to the phone's memory

@@ -37,7 +37,7 @@ body {
     padding-bottom: 1rem;
     display: none;
     scroll-behavior:smooth;
-    
+    font-size: small;
         
 }
 .container {
@@ -147,9 +147,6 @@ body {
     
 }
 
-.current-time{
-    /* margin-left: 30px; */
-}
 .duration {
     display: flex;
     flex-direction: row-reverse;
@@ -206,31 +203,34 @@ body {
 }
 
 .file-name {
-    background-color: rgba(59, 43, 103, 0.748);
+    background-color: rgba(59, 43, 103, 0.604);
     display: flex;
-    width: 90%;
-    min-height: 2rem;
-    column-gap: 0.8rem;
+    width: 80%;
+    height: 1rem;
+    column-gap: 0.1rem;
     padding: 1rem;
     border-style: none;
     border-radius: 1rem;
     margin-bottom: 1rem;
     color: white;
-    max-height: fit-content;
+    /* justify-content: space-between; */
     
 }
 .file-name > div:nth-child(2) {
     background-color: rgba(240, 248, 255, 0);
-    width: 75%;
-    overflow-wrap: break-word;
+    width: 100%;
+    margin-right: 2rem;
     
 }
-/* .music-file{
+.music-file{
+    background-color: rgba(22, 22, 22, 0);
+    margin-bottom: 0.1rem;
     display: flex;
-    background-color: rgba(68, 36, 36, 0);
-    padding: 1rem;
+    justify-content:space-around;
     
-} */
+    
+}
+
 .file-btn-play {
     background-color: rgba(122, 120, 120, 0.305);
     color: white;
@@ -260,6 +260,24 @@ body {
     background-color: rgba(0, 128, 0, 0);
     filter: invert();
 }
+/* .rm-area{
+    
+} */
+.rm-btn {
+    /* margin-top: 0.5rem; */
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+
+}
+.rm-icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    filter: invert();
+    z-index: 1000;
+    
+    
+}
+
 .show-list{
     
     margin-top: -50rem;
