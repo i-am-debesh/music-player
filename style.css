@@ -2,7 +2,7 @@ body {
     
     color: rgb(255, 255, 255);
     background-color: rgb(12, 19, 35);
-    /* background-color: rgb(5, 21, 14); */
+    /* background-color: rgb(18, 13, 21); */
     display: flex;
     justify-content: center;
 
@@ -89,12 +89,20 @@ body {
     background-color: rgba(218, 211, 214, 0.647);
     height: 15rem;
     width: 15rem;
-    border-radius: 100%;
+    border-radius: 50%;
     border-style:solid;
     border-color: rgb(205, 205, 205);
     overflow: hidden;
+    
+    
 }
-
+.poster-img {
+    height: 100%;
+    width: 100%;
+    /* object-fit: cover; */
+    
+    
+}
 .control-icon {
     margin-left: 30px;
     width: 40px;
